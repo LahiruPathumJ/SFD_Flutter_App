@@ -5,7 +5,6 @@ import 'package:login/components/custom_button.dart';
 import 'package:login/components/welcome_background.dart';
 import 'package:login/components/constants.dart';
 import 'package:login/components/responsive.dart';
-import 'package:login/pages/login/login_customer.dart';
 import 'package:login/pages/welcome/welcome2.dart';
 
 class WelcomePage1 extends StatelessWidget {
@@ -81,7 +80,7 @@ class WelcomePage1 extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const LoginCustomer(),
+                          builder: (context) => const WelcomePage2(),
                         ),
                       );
                     },

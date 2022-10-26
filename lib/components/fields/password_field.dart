@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:login/components/constants.dart';
+import 'package:login/components/fields/validators/validators.dart';
 
 class PasswordField extends StatefulWidget {
   const PasswordField({
@@ -44,7 +45,24 @@ class _PasswordFieldState extends State<PasswordField> {
         borderRadius: BorderRadius.circular(30),
         color: kPrimaryColor.withAlpha(50),
       ),
-      child: TextField(
+      child: TextFormField(
+        validator: (v) {
+          if (widget.hint == "Order ID") {
+            if (v!.isValidOrderId == "valid") {
+              return null;
+            } else {
+              return v.isValidOrderId;
+            }
+          }
+          if (widget.hint == "Password") {
+            if (v!.isValidPassword == "valid") {
+              return null;
+            } else {
+              return v.isValidPassword;
+            }
+          }
+          return null;
+        },
         onChanged: (text) {
           setState(() {
             isIconVisible = widget.namecontroller.text == "" ? false : true;

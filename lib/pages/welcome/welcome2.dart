@@ -5,7 +5,7 @@ import 'package:login/components/welcome_background.dart';
 import 'package:login/components/constants.dart';
 import 'package:login/pages/login/login_customer.dart';
 import 'package:login/components/responsive.dart';
-import 'package:login/pages/welcome/welcome1.dart';
+import 'package:login/pages/login/login_rider.dart';
 
 class WelcomePage2 extends StatelessWidget {
   const WelcomePage2({Key? key}) : super(key: key);
@@ -93,7 +93,7 @@ class WelcomePage2 extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const WelcomePage1(),
+                                builder: (context) => const LoginRider(),
                               ),
                             );
                           },

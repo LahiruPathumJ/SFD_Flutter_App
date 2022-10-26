@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:login/components/constants.dart';
+import 'package:login/components/fields/validators/validators.dart';
 
 class InputField extends StatefulWidget {
   const InputField({
@@ -27,6 +28,14 @@ class _InputFieldState extends State<InputField> {
   bool hideCloseButton = true;
 
   @override
+  void initState() {
+    super.initState();
+    if (widget.namecontroller.text != "") {
+      hideCloseButton = false;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Container(
@@ -37,7 +46,52 @@ class _InputFieldState extends State<InputField> {
         borderRadius: BorderRadius.circular(30),
         color: kPrimaryColor.withAlpha(50),
       ),
-      child: TextField(
+      child: TextFormField(
+        validator: (v) {
+          if (widget.hint == "Name") {
+            if (v!.isValidName == "valid") {
+              return null;
+            } else {
+              return v.isValidName;
+            }
+          }
+          if (widget.hint == "Contact Number") {
+            if (v!.isValidPhone == "valid") {
+              return null;
+            } else {
+              return v.isValidPhone;
+            }
+          }
+          if (widget.hint == "Email") {
+            if (v!.isValidEmail == "valid") {
+              return null;
+            } else {
+              return v.isValidEmail;
+            }
+          }
+          if (widget.hint == "Address") {
+            if (v!.isValidAddress == "valid") {
+              return null;
+            } else {
+              return v.isValidAddress;
+            }
+          }
+          if (widget.hint == "Device ID") {
+            if (v!.isValidDeviceId == "valid") {
+              return null;
+            } else {
+              return v.isValidDeviceId;
+            }
+          }
+          if (widget.hint == "OTP") {
+            if (v!.isValidOTP == "valid") {
+              return null;
+            } else {
+              return v.isValidOTP;
+            }
+          }
+          return null;
+        },
         onChanged: (text) {
           setState(() {
             hideCloseButton = widget.namecontroller.text == "" ? true : false;

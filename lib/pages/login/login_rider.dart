@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:login/components/forms/components/cancel_button.dart';
 import 'package:login/components/constants.dart';
-import 'package:login/components/forms/login_form_customer.dart';
-import 'package:login/components/forms/register_form_customer.dart';
+import 'package:login/components/forms/login_form_rider.dart';
+import 'package:login/components/forms/register_form_rider.dart';
 
-class LoginCustomer extends StatefulWidget {
-  const LoginCustomer({super.key});
+class LoginRider extends StatefulWidget {
+  const LoginRider({super.key});
 
   @override
-  State<LoginCustomer> createState() => _LoginCustomerState();
+  State<LoginRider> createState() => _LoginRiderState();
 }
 
-class _LoginCustomerState extends State<LoginCustomer>
+class _LoginRiderState extends State<LoginRider>
     with SingleTickerProviderStateMixin {
   bool isLogin = true;
   late final String type;
@@ -95,7 +95,7 @@ class _LoginCustomerState extends State<LoginCustomer>
           ),
 
           //Login Form
-          LoginFormCustomer(
+          LoginFormRider(
             isLogin: isLogin,
             animationDuration: animationDuration * 5,
             size: size,
@@ -115,7 +115,7 @@ class _LoginCustomerState extends State<LoginCustomer>
           ),
 
           //Register_form
-          RegisterFormCustomer(
+          RegisterFormRider(
               isLogin: isLogin,
               animationDuration: animationDuration * 5,
               size: size,
