@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:login/components/constants.dart';
+// import 'package:login/components/constants.dart';
 import 'package:login/components/fields/input_field.dart';
 import 'package:login/components/fields/password_field.dart';
 import 'package:login/components/submit_button.dart';
-import 'package:login/pages/welcome/welcome2.dart';
+import 'package:login/pages/welcome/welcome1.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginFormCustomer extends StatefulWidget {
@@ -73,15 +73,7 @@ class _LoginFormCustomerState extends State<LoginFormCustomer> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    "Welcome Back",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 30,
-                      color: kPrimaryColor,
-                    ),
-                  ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 100),
                   // SvgPicture.asset('assets/images/register.svg'),
                   Image.asset(
                     'assets/images/login_customer.jpg',
@@ -118,7 +110,7 @@ class _LoginFormCustomerState extends State<LoginFormCustomer> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const WelcomePage2(),
+                            builder: (context) => const WelcomePage1(),
                           ),
                         );
                       }

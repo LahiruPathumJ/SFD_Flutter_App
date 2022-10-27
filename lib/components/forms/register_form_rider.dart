@@ -7,7 +7,7 @@ import 'package:login/components/constants.dart';
 import 'package:login/components/fields/input_field.dart';
 import 'package:login/components/fields/password_field.dart';
 import 'package:login/components/submit_button.dart';
-import 'package:login/pages/welcome/welcome2.dart';
+import 'package:login/pages/welcome/welcome1.dart';
 
 class RegisterFormRider extends StatefulWidget {
   const RegisterFormRider({
@@ -136,7 +136,7 @@ class _RegisterFormRiderState extends State<RegisterFormRider> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const WelcomePage2(),
+                                builder: (context) => const WelcomePage1(),
                               ),
                             );
                           }

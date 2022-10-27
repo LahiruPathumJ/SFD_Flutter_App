@@ -4,6 +4,7 @@ import 'package:login/components/forms/components/cancel_button.dart';
 import 'package:login/components/constants.dart';
 import 'package:login/components/forms/login_form_rider.dart';
 import 'package:login/components/forms/register_form_rider.dart';
+import 'package:login/components/appbar.dart';
 
 class LoginRider extends StatefulWidget {
   const LoginRider({super.key});
@@ -51,30 +52,14 @@ class _LoginRiderState extends State<LoginRider>
     return Scaffold(
       body: Stack(
         children: [
-          Positioned(
-            top: 100,
-            right: -50,
-            child: Container(
-              width: 120,
-              height: 120,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(60),
-                color: kPrimaryColor,
-              ),
-            ),
+          //Login Form
+          LoginFormRider(
+            isLogin: isLogin,
+            animationDuration: animationDuration * 5,
+            size: size,
+            defaultLoginSize: defaultLoginSize,
           ),
-          Positioned(
-            top: -50,
-            left: -50,
-            child: Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(100),
-                color: kPrimaryColor,
-              ),
-            ),
-          ),
+          topBar(size, "Welcome Back"),
 
           //Cancel Button
           CancelButton(
@@ -92,14 +77,6 @@ class _LoginRiderState extends State<LoginRider>
                       },
                     );
                   },
-          ),
-
-          //Login Form
-          LoginFormRider(
-            isLogin: isLogin,
-            animationDuration: animationDuration * 5,
-            size: size,
-            defaultLoginSize: defaultLoginSize,
           ),
 
           AnimatedBuilder(

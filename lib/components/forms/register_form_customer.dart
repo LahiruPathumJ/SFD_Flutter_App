@@ -6,7 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:login/components/constants.dart';
 import 'package:login/components/fields/input_field.dart';
 import 'package:login/components/submit_button.dart';
-import 'package:login/pages/welcome/welcome2.dart';
+import 'package:login/pages/welcome/welcome1.dart';
 
 class RegisterFormCustomer extends StatefulWidget {
   const RegisterFormCustomer({
@@ -135,7 +135,7 @@ class _RegisterFormCustomerState extends State<RegisterFormCustomer> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => const WelcomePage2(),
+                                builder: (context) => const WelcomePage1(),
                               ),
                             );
                           }
@@ -151,11 +151,4 @@ class _RegisterFormCustomerState extends State<RegisterFormCustomer> {
       ),
     );
   }
-
-  // void clear() {
-  //   RegisterForm.name.text = "";
-  //   RegisterForm.contact.text = "";
-  //   RegisterForm.email.text = "";
-  //   RegisterForm.address.text = "";
-  // }
 }
