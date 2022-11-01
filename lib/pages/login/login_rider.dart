@@ -15,7 +15,9 @@ class LoginRider extends StatefulWidget {
 
 class _LoginRiderState extends State<LoginRider>
     with SingleTickerProviderStateMixin {
+  bool notification = false;
   bool isLogin = true;
+  late Widget notificationWidget;
   late final String type;
   late Animation<double> containerSize;
   late AnimationController animationController;
@@ -58,8 +60,10 @@ class _LoginRiderState extends State<LoginRider>
             animationDuration: animationDuration * 5,
             size: size,
             defaultLoginSize: defaultLoginSize,
+            callback1: (val) => setState(() => notification = val),
+            callback2: (widget) => setState(() => notificationWidget = widget),
           ),
-          topBar(size, "Welcome Back"),
+          topBar(size, "Welcome Back", context),
 
           //Cancel Button
           CancelButton(
@@ -93,10 +97,20 @@ class _LoginRiderState extends State<LoginRider>
 
           //Register_form
           RegisterFormRider(
-              isLogin: isLogin,
-              animationDuration: animationDuration * 5,
-              size: size,
-              defaultLoginSize: defaultLoginSize),
+            isLogin: isLogin,
+            animationDuration: animationDuration * 5,
+            size: size,
+            defaultLoginSize: defaultLoginSize,
+            callback1: (val) => setState(() => notification = val),
+            callback2: (widget) => setState(() => notificationWidget = widget),
+          ),
+          if (notification)
+            AnimatedOpacity(
+              duration: animationDuration,
+              opacity: 0.5,
+              child: const Scaffold(),
+            ),
+          if (notification) notificationWidget,
         ],
       ),
     );

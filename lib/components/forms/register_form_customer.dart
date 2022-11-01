@@ -3,10 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
+import 'package:login/components/card/notification/notification.dart';
 import 'package:login/components/constants.dart';
 import 'package:login/components/fields/input_field.dart';
 import 'package:login/components/submit_button.dart';
-import 'package:login/pages/welcome/welcome1.dart';
+import 'package:login/pages/login/login_customer.dart';
 
 class RegisterFormCustomer extends StatefulWidget {
   const RegisterFormCustomer({
@@ -15,9 +16,13 @@ class RegisterFormCustomer extends StatefulWidget {
     required this.animationDuration,
     required this.size,
     required this.defaultLoginSize,
+    required this.callback1,
+    required this.callback2,
   }) : super(key: key);
 
   final bool isLogin;
+  final Function callback1;
+  final Function callback2;
   final Duration animationDuration;
   final Size size;
   final double defaultLoginSize;
@@ -125,19 +130,91 @@ class _RegisterFormCustomerState extends State<RegisterFormCustomer> {
                         tap: () async {
                           if (formKeySignupCustomer.currentState!.validate()) {
                             formKeySignupCustomer.currentState!.save();
+                            widget.callback1(true);
                             // final http.Response response = await postData(
                             //     name.text,
                             //     contact.text,
                             //     address.text,
                             //     email.text);
-                            // if (response.statusCode == 200) {}
+                            // if (response.statusCode == 200) {
+                            //   widget.callback2(NotificationCard(
+                            //     body:
+                            //         "You have Successfully Registered\nLet's Login",
+                            //     onError: '',
+                            //     onSuccess: 'OK',
+                            //     title: 'Success',
+                            //     typeIsSingle: true,
+                            //     tapBack: () {},
+                            //     tapNext: () {
+                            //       Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //           builder: (context) =>
+                            //               const LoginCustomer(),
+                            //         ),
+                            //       );widget.callback1(false);
+                            //     },
+                            //   ));
+                            // } else if (response.statusCode == 400 ||
+                            //     response.statusCode == 406) {
+                            //   widget.callback2(NotificationCard(
+                            //     body: response.body,
+                            //     onError: 'Back',
+                            //     onSuccess: 'Home',
+                            //     title: 'Register Error',
+                            //     typeIsSingle: false,
+                            //     tapBack: () {
+                            //       widget.callback1(false);
+                            //     },
+                            //     tapNext: () {
+                            //       Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //           builder: (context) => const WelcomePage(),
+                            //         ),
+                            //       );widget.callback1(false);
+                            //     },
+                            //   ));
+                            // } else {
+                            // widget.callback2(NotificationCard(
+                            //   body: "",
+                            //   onError: 'Back',
+                            //   onSuccess: 'Home',
+                            //   title: 'Something Went Wrong',
+                            //   typeIsSingle: false,
+                            //   tapBack: () {
+                            //     widget.callback1(false);
+                            //   },
+                            //   tapNext: () {
+                            //     Navigator.push(
+                            //       context,
+                            //       MaterialPageRoute(
+                            //         builder: (context) => const WelcomePage(),
+                            //       ),
+                            //     );widget.callback1(false);
+                            //   },
+                            // ));
+                            // }
 
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const WelcomePage1(),
-                              ),
-                            );
+                            //this is to be removed later
+                            widget.callback2(NotificationCard(
+                              body:
+                                  "You have Successfully Registered\nLet's Login",
+                              onError: '',
+                              onSuccess: 'OK',
+                              title: 'Success',
+                              typeIsSingle: true,
+                              tapBack: () {},
+                              tapNext: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const LoginCustomer(),
+                                  ),
+                                );
+                                widget.callback1(false);
+                              },
+                            ));
                           }
                         }
                         // clear();

@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
-// import 'package:login/components/constants.dart';
+import 'package:login/components/card/notification/notification.dart';
 import 'package:login/components/fields/input_field.dart';
 import 'package:login/components/fields/password_field.dart';
 import 'package:login/components/submit_button.dart';
-import 'package:login/pages/welcome/welcome1.dart';
+import 'package:login/pages/unlock/unlockPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginFormCustomer extends StatefulWidget {
@@ -18,9 +18,13 @@ class LoginFormCustomer extends StatefulWidget {
     required this.animationDuration,
     required this.size,
     required this.defaultLoginSize,
+    required this.callback1,
+    required this.callback2,
   }) : super(key: key);
 
   final bool isLogin;
+  final Function callback1;
+  final Function callback2;
   final Duration animationDuration;
   final Size size;
   final double defaultLoginSize;
@@ -32,8 +36,21 @@ class LoginFormCustomer extends StatefulWidget {
 class _LoginFormCustomerState extends State<LoginFormCustomer> {
   final GlobalKey<FormState> formKeyLoginCustomer = GlobalKey<FormState>();
 
-  static TextEditingController contact = TextEditingController();
+  TextEditingController contact = TextEditingController();
   TextEditingController orderid = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _initNumber();
+  }
+
+  _initNumber() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    if (pref.getString("mobno") != null) {
+      contact.text = pref.getString("mobno")!;
+    }
+  }
 
   Future<http.Response> postData(String mobno, String orderid) async {
     String token;
@@ -77,9 +94,9 @@ class _LoginFormCustomerState extends State<LoginFormCustomer> {
                   // SvgPicture.asset('assets/images/register.svg'),
                   Image.asset(
                     'assets/images/login_customer.jpg',
-                    width: widget.size.width * 0.3,
+                    width: 150,
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 30),
                   InputField(
                     maxlen: 10,
                     icon: Icons.phone,
@@ -103,16 +120,90 @@ class _LoginFormCustomerState extends State<LoginFormCustomer> {
                     tap: () async {
                       if (formKeyLoginCustomer.currentState!.validate()) {
                         formKeyLoginCustomer.currentState!.save();
+                        widget.callback1(true);
                         // final response =
                         //     await postData(contact.text, orderid.text);
-                        // if (response.statusCode == 200) {}
+                        // if (response.statusCode == 200) {
+                        //   widget.callback2(NotificationCard(
+                        //     body: 'You have Successfully Logged In...',
+                        //     onError: '',
+                        //     onSuccess: 'OK',
+                        //     title: 'Success',
+                        //     typeIsSingle: true,
+                        //     tapBack: () {},
+                        //     tapNext: () {
+                        //       Navigator.push(
+                        //         context,
+                        //         MaterialPageRoute(
+                        //           builder: (context) => const UnlockPage(),
+                        //         ),
+                        //       );
+                        //     },
+                        //   ));
+                        // } else if (response.statusCode == 400 ||
+                        //     response.statusCode == 401 ||
+                        //     response.statusCode == 404) {
+                        //   widget.callback2(
+                        //     NotificationCard(
+                        //       body: response.body,
+                        //       onError: 'Back',
+                        //       onSuccess: 'Home',
+                        //       title: 'Login Error',
+                        //       typeIsSingle: false,
+                        //       tapBack: () {
+                        //         widget.callback1(false);
+                        //       },
+                        //       tapNext: () {
+                        //         Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //             builder: (context) => const WelcomePage(),
+                        //           ),
+                        //         );
+                        //       },
+                        //     ),
+                        //   );
+                        // } else {
+                        //   widget.callback2(
+                        //     NotificationCard(
+                        //       body: "",
+                        //       onError: 'Back',
+                        //       onSuccess: 'Home',
+                        //       title: 'Something Went Wrong',
+                        //       typeIsSingle: false,
+                        //       tapBack: () {
+                        //         widget.callback1(false);
+                        //       },
+                        //       tapNext: () {
+                        //         Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //             builder: (context) => const WelcomePage(),
+                        //           ),
+                        //         );
+                        //       },
+                        //     ),
+                        //   );
+                        // }
 
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const WelcomePage1(),
-                          ),
-                        );
+                        //this is to be removed
+                        widget.callback2(NotificationCard(
+                          body: 'You have Successfully Logged In...',
+                          onError: '',
+                          onSuccess: 'OK',
+                          title: 'Success',
+                          typeIsSingle: true,
+                          tapBack: () {},
+                          tapNext: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const UnlockPage(),
+                              ),
+                            );
+                            widget.callback1(false);
+                          },
+                        ));
                       }
                     },
                   ),

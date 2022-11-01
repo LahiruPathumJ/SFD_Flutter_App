@@ -83,13 +83,6 @@ class _InputFieldState extends State<InputField> {
               return v.isValidDeviceId;
             }
           }
-          if (widget.hint == "OTP") {
-            if (v!.isValidOTP == "valid") {
-              return null;
-            } else {
-              return v.isValidOTP;
-            }
-          }
           return null;
         },
         onChanged: (text) {

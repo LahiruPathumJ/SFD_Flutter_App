@@ -3,11 +3,12 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart';
+import 'package:login/components/card/notification/notification.dart';
 import 'package:login/components/constants.dart';
 import 'package:login/components/fields/input_field.dart';
 import 'package:login/components/fields/password_field.dart';
 import 'package:login/components/submit_button.dart';
-import 'package:login/pages/welcome/welcome1.dart';
+import 'package:login/pages/welcome/welcome.dart';
 
 class RegisterFormRider extends StatefulWidget {
   const RegisterFormRider({
@@ -16,9 +17,13 @@ class RegisterFormRider extends StatefulWidget {
     required this.animationDuration,
     required this.size,
     required this.defaultLoginSize,
+    required this.callback1,
+    required this.callback2,
   }) : super(key: key);
 
   final bool isLogin;
+  final Function callback1;
+  final Function callback2;
   final Duration animationDuration;
   final Size size;
   final double defaultLoginSize;
@@ -125,24 +130,94 @@ class _RegisterFormRiderState extends State<RegisterFormRider> {
                         tap: () async {
                           if (formKeySignupRider.currentState!.validate()) {
                             formKeySignupRider.currentState!.save();
+                            widget.callback1(true);
                             // final http.Response response = await postData(
                             //   name.text,
                             //   contact.text,
                             //   deviceid.text,
                             //   password.text,
                             // );
-                            // if (response.statusCode == 200) {}
+                            // if (response.statusCode == 200) {
+                            //   widget.callback2(NotificationCard(
+                            //     body:
+                            //         "You have Successfully Registered\nLet's Login",
+                            //     onError: '',
+                            //     onSuccess: 'OK',
+                            //     title: 'Success',
+                            //     typeIsSingle: true,
+                            //     tapBack: () {},
+                            //     tapNext: () {
+                            //       Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //           builder: (context) => const LoginRider(),
+                            //         ),
+                            //       );widget.callback1(false);
+                            //     },
+                            //   ));
+                            // } else if (response.statusCode == 400 ||
+                            //     response.statusCode == 406) {
+                            //   widget.callback2(NotificationCard(
+                            //     body: response.body,
+                            //     onError: 'Back',
+                            //     onSuccess: 'Home',
+                            //     title: 'Register Error',
+                            //     typeIsSingle: false,
+                            //     tapBack: () {
+                            //       widget.callback1(false);
+                            //     },
+                            //     tapNext: () {
+                            //       Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //           builder: (context) => const WelcomePage(),
+                            //         ),
+                            //       );widget.callback1(false);
+                            //     },
+                            //   ));
+                            // } else {
+                            //   widget.callback2(NotificationCard(
+                            //     body: '',
+                            //     onError: 'Back',
+                            //     onSuccess: 'Home',
+                            //     title: 'Something Went Wrong',
+                            //     typeIsSingle: false,
+                            //     tapBack: () {
+                            //       widget.callback1(false);
+                            //     },
+                            //     tapNext: () {
+                            //       Navigator.push(
+                            //         context,
+                            //         MaterialPageRoute(
+                            //           builder: (context) => const WelcomePage(),
+                            //         ),
+                            //       );widget.callback1(false);
+                            //     },
+                            //   ));
+                            // }
 
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const WelcomePage1(),
-                              ),
-                            );
+                            //this is to be removed
+                            widget.callback2(NotificationCard(
+                              body: 'You have Successfully Registered...',
+                              onError: 'Back',
+                              onSuccess: 'OK',
+                              title: 'Success',
+                              typeIsSingle: false,
+                              tapBack: () {
+                                widget.callback1(false);
+                              },
+                              tapNext: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const WelcomePage(),
+                                  ),
+                                );
+                                widget.callback1(false);
+                              },
+                            ));
                           }
-                        }
-                        // clear();
-                        ),
+                        }),
                   ],
                 ),
               ),
@@ -152,11 +227,4 @@ class _RegisterFormRiderState extends State<RegisterFormRider> {
       ),
     );
   }
-
-  // void clear() {
-  //   RegisterForm.name.text = "";
-  //   RegisterForm.contact.text = "";
-  //   RegisterForm.email.text = "";
-  //   RegisterForm.address.text = "";
-  // }
 }

@@ -61,6 +61,13 @@ class _PasswordFieldState extends State<PasswordField> {
               return v.isValidPassword;
             }
           }
+          if (widget.hint == "OTP") {
+            if (v!.isValidOTP == "valid") {
+              return null;
+            } else {
+              return v.isValidOTP;
+            }
+          }
           return null;
         },
         onChanged: (text) {

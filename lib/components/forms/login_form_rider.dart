@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 // import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:login/components/card/notification/notification.dart';
 import 'package:login/components/fields/input_field.dart';
 import 'package:login/components/fields/password_field.dart';
 import 'package:login/components/submit_button.dart';
@@ -17,9 +18,13 @@ class LoginFormRider extends StatefulWidget {
     required this.animationDuration,
     required this.size,
     required this.defaultLoginSize,
+    required this.callback1,
+    required this.callback2,
   }) : super(key: key);
 
   final bool isLogin;
+  final Function callback1;
+  final Function callback2;
   final Duration animationDuration;
   final Size size;
   final double defaultLoginSize;
@@ -33,6 +38,19 @@ class _LoginFormRiderState extends State<LoginFormRider> {
 
   static TextEditingController contact = TextEditingController();
   TextEditingController password = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _checkLoginRider();
+  }
+
+  _checkLoginRider() async {
+    SharedPreferences riderToken = await SharedPreferences.getInstance();
+    if (riderToken.getString("mobnoRider") != null) {
+      contact.text = riderToken.getString("mobnoRider")!;
+    }
+  }
 
   Future<http.Response> postData(String mobno, String password) async {
     String token;
@@ -74,10 +92,10 @@ class _LoginFormRiderState extends State<LoginFormRider> {
                   const SizedBox(height: 100),
                   // SvgPicture.asset('assets/images/register.svg'),
                   Image.asset(
-                    'assets/images/login_customer.jpg',
-                    width: widget.size.width * 0.3,
+                    'assets/images/rider_login.png',
+                    width: 200,
                   ),
-                  const SizedBox(height: 40),
+                  const SizedBox(height: 30),
                   InputField(
                     maxlen: 10,
                     icon: Icons.phone,
@@ -101,14 +119,92 @@ class _LoginFormRiderState extends State<LoginFormRider> {
                     tap: () async {
                       if (formKeyLoginRider.currentState!.validate()) {
                         formKeyLoginRider.currentState!.save();
+                        widget.callback1(true);
                         // final http.Response response =
-                        // await postData(contact.text, password.text);
-                        // if (response.statusCode == 200) {}
+                        //     await postData(contact.text, password.text);
+                        //  if (response.statusCode == 200) {
+                        //   widget.callback2(
+                        //     NotificationCard(
+                        //       body: 'You Have Successfully Logged In...',
+                        //       onError: "",
+                        //       onSuccess: 'OK',
+                        //       title: 'Success',
+                        //       typeIsSingle: true,
+                        //       tapBack: () {},
+                        //       tapNext: () {
+                        //         Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //             builder: (context) => const OrderList(),
+                        //           ),
+                        //         );widget.callback1(false);
+                        //       },
+                        //     ),
+                        //   );
+                        // } else if (response.statusCode == 400) {
+                        //   widget.callback2(
+                        //     NotificationCard(
+                        //       body: 'Incorrect Credentials',
+                        //       onError: 'Back',
+                        //       onSuccess: 'Home',
+                        //       title: 'Login Error',
+                        //       typeIsSingle: false,
+                        //       tapBack: () {
+                        //         widget.callback1(false);
+                        //       },
+                        //       tapNext: () {
+                        //         Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //             builder: (context) => const WelcomePage(),
+                        //           ),
+                        //         );widget.callback1(false);
+                        //       },
+                        //     ),
+                        //   );
+                        // } else {
+                        //   widget.callback2(
+                        //     NotificationCard(
+                        //       body: '',
+                        //       onError: 'Back',
+                        //       onSuccess: 'Home',
+                        //       title: 'Something Went Wrong',
+                        //       typeIsSingle: false,
+                        //       tapBack: () {
+                        //         widget.callback1(false);
+                        //       },
+                        //       tapNext: () {
+                        //         Navigator.push(
+                        //           context,
+                        //           MaterialPageRoute(
+                        //             builder: (context) => const WelcomePage(),
+                        //           ),
+                        //         );widget.callback1(false);
+                        //       },
+                        //     ),
+                        //   );
+                        // }
 
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const OrderList(),
+                        //this is to be removed
+                        widget.callback2(
+                          NotificationCard(
+                            body: 'You have Successfully Logged In...',
+                            onError: 'Back',
+                            onSuccess: 'OK',
+                            title: 'Success',
+                            typeIsSingle: true,
+                            tapBack: () {
+                              widget.callback1(false);
+                            },
+                            tapNext: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const OrderList(),
+                                ),
+                              );
+                              widget.callback1(false);
+                            },
                           ),
                         );
                       }
