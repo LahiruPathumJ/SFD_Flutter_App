@@ -26,6 +26,7 @@ class _LoginRiderState extends State<LoginRider>
   @override
   void initState() {
     super.initState();
+    notificationWidget = const SizedBox();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     animationController =
         AnimationController(vsync: this, duration: animationDuration);

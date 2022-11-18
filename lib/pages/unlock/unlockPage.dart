@@ -1,3 +1,7 @@
+// ignore: duplicate_ignore
+// ignore: file_names
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:login/components/appbar.dart';
 import 'package:login/components/forms/unlock_form.dart';
