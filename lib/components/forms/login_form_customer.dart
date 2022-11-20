@@ -1,14 +1,15 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-// import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:login/components/card/notification/notification.dart';
 import 'package:login/components/fields/input_field.dart';
 import 'package:login/components/fields/password_field.dart';
 import 'package:login/components/submit_button.dart';
 import 'package:login/pages/unlock/unlockPage.dart';
+import 'package:login/pages/welcome/welcome.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginFormCustomer extends StatefulWidget {
@@ -60,7 +61,7 @@ class _LoginFormCustomerState extends State<LoginFormCustomer> {
     Map<String, String> data = {"mobno": mobno, "orderid": orderid};
     final body = jsonEncode(data);
     final response = await http.post(
-      Uri.parse("https://35.171.26.170/api/auth/customer"),
+      Uri.parse("https://20.235.78.254/api/auth/customer"),
       headers: {"Content-Type": "application/json", "connection": "keep-alive"},
       body: body,
     );
@@ -121,89 +122,98 @@ class _LoginFormCustomerState extends State<LoginFormCustomer> {
                       if (formKeyLoginCustomer.currentState!.validate()) {
                         formKeyLoginCustomer.currentState!.save();
                         widget.callback1(true);
-                        // final response =
-                        //     await postData(contact.text, orderid.text);
-                        // if (response.statusCode == 200) {
-                        //   widget.callback2(NotificationCard(
-                        //     body: 'You have Successfully Logged In...',
-                        //     onError: '',
-                        //     onSuccess: 'OK',
-                        //     title: 'Success',
-                        //     typeIsSingle: true,
-                        //     tapBack: () {},
-                        //     tapNext: () {
-                        //       Navigator.push(
-                        //         context,
-                        //         MaterialPageRoute(
-                        //           builder: (context) => const UnlockPage(),
-                        //         ),
-                        //       );
-                        //     },
-                        //   ));
-                        // } else if (response.statusCode == 400 ||
-                        //     response.statusCode == 401 ||
-                        //     response.statusCode == 404) {
-                        //   widget.callback2(
-                        //     NotificationCard(
-                        //       body: response.body,
-                        //       onError: 'Back',
-                        //       onSuccess: 'Home',
-                        //       title: 'Login Error',
-                        //       typeIsSingle: false,
-                        //       tapBack: () {
-                        //         widget.callback1(false);
-                        //       },
-                        //       tapNext: () {
-                        //         Navigator.push(
-                        //           context,
-                        //           MaterialPageRoute(
-                        //             builder: (context) => const WelcomePage(),
-                        //           ),
-                        //         );
-                        //       },
-                        //     ),
-                        //   );
-                        // } else {
-                        //   widget.callback2(
-                        //     NotificationCard(
-                        //       body: "",
-                        //       onError: 'Back',
-                        //       onSuccess: 'Home',
-                        //       title: 'Something Went Wrong',
-                        //       typeIsSingle: false,
-                        //       tapBack: () {
-                        //         widget.callback1(false);
-                        //       },
-                        //       tapNext: () {
-                        //         Navigator.push(
-                        //           context,
-                        //           MaterialPageRoute(
-                        //             builder: (context) => const WelcomePage(),
-                        //           ),
-                        //         );
-                        //       },
-                        //     ),
-                        //   );
-                        // }
-
-                        //this is to be removed
-                        widget.callback2(NotificationCard(
-                          body: 'You have Successfully Logged In...',
-                          onError: '',
-                          onSuccess: 'OK',
-                          title: 'Success',
-                          typeIsSingle: true,
-                          tapBack: () {},
-                          tapNext: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const UnlockPage(),
+                        try {
+                          final response =
+                              await postData(contact.text, orderid.text);
+                          if (response.statusCode == 200) {
+                            widget.callback2(NotificationCard(
+                              body: 'You have Successfully Logged In...',
+                              onError: '',
+                              onSuccess: 'OK',
+                              title: 'Success',
+                              typeIsSingle: true,
+                              tapBack: () {},
+                              tapNext: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const UnlockPage(),
+                                  ),
+                                );
+                              },
+                            ));
+                          } else if (response.statusCode == 400 ||
+                              response.statusCode == 401 ||
+                              response.statusCode == 404) {
+                            widget.callback2(
+                              NotificationCard(
+                                body: response.body,
+                                onError: 'Back',
+                                onSuccess: 'Home',
+                                title: 'Login Error',
+                                typeIsSingle: false,
+                                tapBack: () {
+                                  widget.callback1(false);
+                                },
+                                tapNext: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const WelcomePage(),
+                                    ),
+                                  );
+                                },
                               ),
                             );
-                            widget.callback1(false);
-                          },
-                        ));
+                          } else {
+                            widget.callback2(
+                              NotificationCard(
+                                body: "",
+                                onError: 'Back',
+                                onSuccess: 'Home',
+                                title: 'Something Went Wrong',
+                                typeIsSingle: false,
+                                tapBack: () {
+                                  widget.callback1(false);
+                                },
+                                tapNext: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const WelcomePage(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            );
+                          }
+                        } on TimeoutException catch (e) {
+                          widget.callback2(
+                            NotificationCard(
+                              body: 'Check Your Connection \n and\n try again',
+                              onError: '',
+                              onSuccess: 'OK',
+                              title: 'Connection Error!',
+                              typeIsSingle: true,
+                              tapBack: () {},
+                              tapNext: () {
+                                widget.callback1(false);
+                              },
+                            ),
+                          );
+                        } catch (e) {
+                          widget.callback2(NotificationCard(
+                            body: e.toString(),
+                            onError: '',
+                            onSuccess: 'OK',
+                            title: 'Connection Error!',
+                            typeIsSingle: true,
+                            tapBack: () {},
+                            tapNext: () {
+                              widget.callback1(false);
+                            },
+                          ));
+                        }
                       }
                     },
                   ),

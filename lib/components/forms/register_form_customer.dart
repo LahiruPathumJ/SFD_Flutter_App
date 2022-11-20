@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,7 @@ import 'package:login/components/constants.dart';
 import 'package:login/components/fields/input_field.dart';
 import 'package:login/components/submit_button.dart';
 import 'package:login/pages/login/login_customer.dart';
+import 'package:login/pages/welcome/welcome.dart';
 
 class RegisterFormCustomer extends StatefulWidget {
   const RegisterFormCustomer({
@@ -49,7 +51,7 @@ class _RegisterFormCustomerState extends State<RegisterFormCustomer> {
     };
     final body = jsonEncode(data);
     final response = await http.post(
-      Uri.parse("https://35.171.26.170/api/users/customer"),
+      Uri.parse("https://20.235.78.254/api/users/customer"),
       headers: {"Content-Type": "application/json"},
       body: body,
     );
@@ -125,100 +127,116 @@ class _RegisterFormCustomerState extends State<RegisterFormCustomer> {
                     ),
                     const SizedBox(height: 25),
                     SubmitButton(
-                        width: widget.size.width * 0.8,
-                        title: "SIGN UP",
-                        tap: () async {
-                          if (formKeySignupCustomer.currentState!.validate()) {
-                            formKeySignupCustomer.currentState!.save();
-                            widget.callback1(true);
-                            // final http.Response response = await postData(
-                            //     name.text,
-                            //     contact.text,
-                            //     address.text,
-                            //     email.text);
-                            // if (response.statusCode == 200) {
-                            //   widget.callback2(NotificationCard(
-                            //     body:
-                            //         "You have Successfully Registered\nLet's Login",
-                            //     onError: '',
-                            //     onSuccess: 'OK',
-                            //     title: 'Success',
-                            //     typeIsSingle: true,
-                            //     tapBack: () {},
-                            //     tapNext: () {
-                            //       Navigator.push(
-                            //         context,
-                            //         MaterialPageRoute(
-                            //           builder: (context) =>
-                            //               const LoginCustomer(),
-                            //         ),
-                            //       );widget.callback1(false);
-                            //     },
-                            //   ));
-                            // } else if (response.statusCode == 400 ||
-                            //     response.statusCode == 406) {
-                            //   widget.callback2(NotificationCard(
-                            //     body: response.body,
-                            //     onError: 'Back',
-                            //     onSuccess: 'Home',
-                            //     title: 'Register Error',
-                            //     typeIsSingle: false,
-                            //     tapBack: () {
-                            //       widget.callback1(false);
-                            //     },
-                            //     tapNext: () {
-                            //       Navigator.push(
-                            //         context,
-                            //         MaterialPageRoute(
-                            //           builder: (context) => const WelcomePage(),
-                            //         ),
-                            //       );widget.callback1(false);
-                            //     },
-                            //   ));
-                            // } else {
-                            // widget.callback2(NotificationCard(
-                            //   body: "",
-                            //   onError: 'Back',
-                            //   onSuccess: 'Home',
-                            //   title: 'Something Went Wrong',
-                            //   typeIsSingle: false,
-                            //   tapBack: () {
-                            //     widget.callback1(false);
-                            //   },
-                            //   tapNext: () {
-                            //     Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (context) => const WelcomePage(),
-                            //       ),
-                            //     );widget.callback1(false);
-                            //   },
-                            // ));
-                            // }
-
-                            //this is to be removed later
-                            widget.callback2(NotificationCard(
-                              body:
-                                  "You have Successfully Registered\nLet's Login",
-                              onError: '',
-                              onSuccess: 'OK',
-                              title: 'Success',
-                              typeIsSingle: true,
-                              tapBack: () {},
-                              tapNext: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const LoginCustomer(),
-                                  ),
-                                );
-                                widget.callback1(false);
-                              },
-                            ));
+                      width: widget.size.width * 0.8,
+                      title: "SIGN UP",
+                      tap: () async {
+                        if (formKeySignupCustomer.currentState!.validate()) {
+                          formKeySignupCustomer.currentState!.save();
+                          widget.callback1(true);
+                          try {
+                            final http.Response response = await postData(
+                                name.text,
+                                contact.text,
+                                address.text,
+                                email.text);
+                            if (response.statusCode == 200) {
+                              widget.callback2(NotificationCard(
+                                body:
+                                    "You have Successfully Registered\n\nLet's Login",
+                                onError: '',
+                                onSuccess: 'OK',
+                                title: 'Success',
+                                typeIsSingle: true,
+                                tapBack: () {},
+                                tapNext: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoginCustomer(),
+                                    ),
+                                  );
+                                  widget.callback1(false);
+                                },
+                              ));
+                            } else if (response.statusCode == 400 ||
+                                response.statusCode == 406) {
+                              widget.callback2(NotificationCard(
+                                body: response.body,
+                                onError: 'Back',
+                                onSuccess: 'Home',
+                                title: 'Register Error',
+                                typeIsSingle: false,
+                                tapBack: () {
+                                  widget.callback1(false);
+                                },
+                                tapNext: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const WelcomePage(),
+                                    ),
+                                  );
+                                  widget.callback1(false);
+                                },
+                              ));
+                            } else {
+                              widget.callback2(
+                                NotificationCard(
+                                  body: "",
+                                  onError: 'Back',
+                                  onSuccess: 'Home',
+                                  title: 'Something Went Wrong',
+                                  typeIsSingle: false,
+                                  tapBack: () {
+                                    widget.callback1(false);
+                                  },
+                                  tapNext: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const WelcomePage(),
+                                      ),
+                                    );
+                                    widget.callback1(false);
+                                  },
+                                ),
+                              );
+                            }
+                          } on TimeoutException catch (e) {
+                            widget.callback2(
+                              NotificationCard(
+                                body:
+                                    'Check Your Connection \n and\n try again',
+                                onError: '',
+                                onSuccess: 'OK',
+                                title: 'Connection Error!',
+                                typeIsSingle: true,
+                                tapBack: () {},
+                                tapNext: () {
+                                  widget.callback1(false);
+                                },
+                              ),
+                            );
+                          } catch (e) {
+                            widget.callback2(
+                              NotificationCard(
+                                body: e.toString(),
+                                onError: '',
+                                onSuccess: 'OK',
+                                title: 'Connection Error!',
+                                typeIsSingle: true,
+                                tapBack: () {},
+                                tapNext: () {
+                                  widget.callback1(false);
+                                },
+                              ),
+                            );
                           }
                         }
-                        // clear();
-                        ),
+                      },
+                    ),
                   ],
                 ),
               ),

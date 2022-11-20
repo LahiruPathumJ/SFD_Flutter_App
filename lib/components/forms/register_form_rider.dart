@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -53,6 +54,8 @@ class _RegisterFormRiderState extends State<RegisterFormRider> {
     final response = await http.post(
       Uri.parse("https://20.235.78.254/api/users/rider"),
       // Uri.parse("https://jsonplaceholder.typicode.com/posts"),
+      // Uri.parse("http://52.69.243.70:3000/api/login"),
+
       headers: {"Content-Type": "application/json"},
       body: body,
     );
@@ -127,22 +130,24 @@ class _RegisterFormRiderState extends State<RegisterFormRider> {
                     ),
                     const SizedBox(height: 25),
                     SubmitButton(
-                        width: widget.size.width * 0.8,
-                        title: "SIGN UP",
-                        tap: () async {
-                          if (formKeySignupRider.currentState!.validate()) {
-                            formKeySignupRider.currentState!.save();
-                            widget.callback1(true);
+                      width: widget.size.width * 0.8,
+                      title: "SIGN UP",
+                      tap: () async {
+                        if (formKeySignupRider.currentState!.validate()) {
+                          formKeySignupRider.currentState!.save();
+                          widget.callback1(true);
+                          try {
                             final http.Response response = await postData(
                               name.text,
                               contact.text,
                               deviceid.text,
                               password.text,
                             );
-                            if (response.statusCode == 200) {
+                            if (response.statusCode == 200 ||
+                                response.statusCode == 201) {
                               widget.callback2(NotificationCard(
                                 body:
-                                    "You have Successfully Registered\nLet's Login",
+                                    "You have Successfully Registered\n\nLet's Login",
                                 onError: '',
                                 onSuccess: 'OK',
                                 title: 'Success',
@@ -180,51 +185,87 @@ class _RegisterFormRiderState extends State<RegisterFormRider> {
                                 },
                               ));
                             } else {
-                              // print(response.body);
-                              // print(response.statusCode);
-                              widget.callback2(NotificationCard(
-                                body: 'Something Went Wrong',
-                                onError: 'Back',
-                                onSuccess: 'Home',
-                                title: 'OOPS!!!',
-                                typeIsSingle: false,
+                              widget.callback2(
+                                NotificationCard(
+                                  body: 'Something Went Wrong',
+                                  onError: 'Back',
+                                  onSuccess: 'Home',
+                                  title: 'OOPS!!!',
+                                  typeIsSingle: false,
+                                  tapBack: () {
+                                    widget.callback1(false);
+                                  },
+                                  tapNext: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const WelcomePage(),
+                                      ),
+                                    );
+                                    widget.callback1(false);
+                                  },
+                                ),
+                              );
+                            }
+                          } on TimeoutException catch (e) {
+                            widget.callback2(
+                              NotificationCard(
+                                body:
+                                    'Check Your Connection \n and\n try again',
+                                onError: '',
+                                onSuccess: 'OK',
+                                title: 'Connection Error!',
+                                typeIsSingle: true,
                                 tapBack: () {
                                   widget.callback1(false);
                                 },
-                                tapNext: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const WelcomePage(),
-                                    ),
-                                  );
-                                  widget.callback1(false);
-                                },
-                              ));
-                            }
-
-                            //this is to be removed
-                            // widget.callback2(NotificationCard(
-                            //   body: 'You have Successfully Registered...',
-                            //   onError: 'Back',
-                            //   onSuccess: 'OK',
-                            //   title: 'Success',
-                            //   typeIsSingle: false,
-                            //   tapBack: () {
-                            //     widget.callback1(false);
-                            //   },
-                            //   tapNext: () {
-                            //     Navigator.push(
-                            //       context,
-                            //       MaterialPageRoute(
-                            //         builder: (context) => const WelcomePage(),
-                            //       ),
-                            //     );
-                            //     widget.callback1(false);
-                            //   },
-                            // ));
+                                tapNext: () {},
+                              ),
+                            );
+                          } catch (e) {
+                            widget.callback2(NotificationCard(
+                              body: e.toString(),
+                              onError: '',
+                              onSuccess: 'OK',
+                              title: 'Connection Error!',
+                              typeIsSingle: true,
+                              tapBack: () {
+                                widget.callback1(false);
+                              },
+                              tapNext: () {},
+                            ));
                           }
-                        }),
+                          // on TimeoutException catch (e) {
+                          //   widget.callback2(NotificationCard(
+                          //     body: 'Check Your Connection \n and\n try again',
+                          //     onError: 'Back',
+                          //     onSuccess: 'Home',
+                          //     title: 'Connection Error!',
+                          //     typeIsSingle: true,
+                          //     tapBack: () {
+                          //       widget.callback1(false);
+                          //     },
+                          //     tapNext: () {},
+                          //   ));
+                          // }
+                          //on SocketException catch (e) {
+                          //   widget.callback2(NotificationCard(
+                          //     body: e.message,
+                          //     onError: 'Back',
+                          //     onSuccess: 'Back',
+                          //     title: 'Connection Error',
+                          //     typeIsSingle: true,
+                          //     tapBack: () {
+                          //       widget.callback1(false);
+                          //     },
+                          //     tapNext: () {},
+                          //   ));
+                          // }
+
+                        }
+                      },
+                    ),
                   ],
                 ),
               ),
